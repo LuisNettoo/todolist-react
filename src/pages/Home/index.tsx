@@ -7,7 +7,6 @@ interface Tasks {
   id: number;
   title: string;
   description: string;
-  created_at: Date;
 }
 
 export function Home() {
@@ -25,7 +24,21 @@ export function Home() {
         setTasks(data);
       })
       .catch((err) => console.log(err));
-  }, [tasks]);
+  }, []);
+
+  const handleRemove = (id: number) => {
+    fetch(`http://localhost:3000/todo/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then(() => {
+        setTasks(tasks.filter((task) => task.id !== id));
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <>
@@ -38,6 +51,7 @@ export function Home() {
               key={task.id}
               title={task.title}
               description={task.description}
+              handleRemove={handleRemove}
             />
           ))}
         <NewStickyNote />

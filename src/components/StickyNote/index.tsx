@@ -5,13 +5,18 @@ interface StickyNoteProps {
   id: number;
   title: string;
   description: string;
+  handleRemove: (arg0: number) => void;
 }
 
-export function StickyNote({ id, title, description }: StickyNoteProps) {
-  const removeTask = () => {
-    fetch(`http://localhost:3000/todo/${id}`, {
-      method: "DELETE",
-    });
+export function StickyNote({
+  id,
+  title,
+  description,
+  handleRemove,
+}: StickyNoteProps) {
+  const removeTask = (event: React.FormEvent) => {
+    event.preventDefault();
+    handleRemove(id);
   };
 
   return (
